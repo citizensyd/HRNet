@@ -1,24 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
+import { createBrowserRouter, createRoutesFromElements, RouterProvider, Route } from "react-router-dom";
+import Layout from "./Components/Layout";
+import Home from "./Pages/Home";
+import CreateEmployee from "./Components/CreateEmployee";
+import EmployeeList from "./Components/EmployeeList";
+import NotFound from "./Components/NotFound";
 
+/**
+ * Creates a browser router and defines routes for the application.
+ */
+const router = createBrowserRouter(createRoutesFromElements(
+  <Route path="/" element={<Layout />}>
+    <Route index element={<Home />} />
+    <Route
+      path="create"
+      element={<CreateEmployee />}
+    />
+    <Route
+      path="list"
+      element={<EmployeeList />}
+    />
+    <Route 
+      path="*"
+      element={<NotFound />} />
+  </Route>
+));
+
+/**
+ * Main application component.
+ * @returns {JSX.Element} The main application component.
+ */
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <RouterProvider
+      router={router}
+      /* fallbackElement={<SpinnerOfDoom />} */
+      future={{ v7_startTransition: true }}
+    />
   );
 }
 
