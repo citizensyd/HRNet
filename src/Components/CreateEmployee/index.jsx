@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Select from 'react-select';
+import { useDispatch } from 'react-redux';
+import { addEmployee } from '../../slices/employeeSlice';
 
 /**
  * Component representing the Create Employee page.
@@ -13,9 +15,12 @@ const CreateEmployee = () => {
    * Handles the save action for creating a new employee.
    * @param {Event} event - The click event.
    */
+  const dispatch = useDispatch();
   const handleSave = (event) => {
     event.preventDefault();
-    // Save logic
+    dispatch(addEmployee({
+      // Employee details you want to add
+    }));
   };
 
   const states = [
