@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import Select from 'react-select';
 import { useDispatch } from 'react-redux';
 import { addEmployee } from '../../slices/employeeSlice';
+import * as datipiReact from 'datipi-react';
+import { useEffect } from 'react';
 
 /**
  * Component representing the Create Employee page.
@@ -10,6 +12,17 @@ import { addEmployee } from '../../slices/employeeSlice';
  * @returns {JSX.Element} Component for creating a new employee.
  */
 const CreateEmployee = () => {
+
+
+useEffect(() => {
+    datipiReact.initDateTimePicker('#date-of-birth', {
+      format: 'Y-m-d',
+    });
+
+    datipiReact.initDateTimePicker('#start-date', {
+      format: 'Y-m-d',
+    });
+  }, []);
 
   /**
    * Handles the save action for creating a new employee.
@@ -282,6 +295,11 @@ const CreateEmployee = () => {
     { value: 'Human Resources', label: 'Human Resources' },
     { value: 'Legal', label: 'Legal' },
   ];
+
+  const dateTimePickerOptions = {
+    format: 'Y-m-d',
+    // Autres options personnalisées si nécessaire
+  };
 
   return (
     <>
