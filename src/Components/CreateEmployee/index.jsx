@@ -13,8 +13,11 @@ import { useEffect } from 'react';
  */
 const CreateEmployee = () => {
 
-
-useEffect(() => {
+  /**
+   * A hook that initializes DateTimePickers when the component mounts
+   * and destroys them when the component unmounts.
+   */
+  useEffect(() => {
     datipiReact.initDateTimePicker('#date-of-birth', {
       format: 'Y-m-d',
     });
@@ -22,6 +25,11 @@ useEffect(() => {
     datipiReact.initDateTimePicker('#start-date', {
       format: 'Y-m-d',
     });
+
+    return () => {
+      datipiReact.destroyDateTimePicker('#date-of-birth');
+      datipiReact.destroyDateTimePicker('#start-date');
+    };
   }, []);
 
   /**
