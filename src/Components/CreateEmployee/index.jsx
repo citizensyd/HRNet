@@ -6,13 +6,29 @@ import { addEmployee } from '../../slices/employeeSlice';
 import * as datipiReact from 'datipi-react';
 import { useSelector } from 'react-redux';
 import { states } from '../../data/states';
+import Modal from '../Modal';
 
 /**
  * Component representing the Create Employee page.
+ *
+ * This component provides a form for creating a new employee and includes various input fields
+ * such as first name, last name, date of birth, and more. It also handles the submission of the form
+ * and displays a modal when an employee is successfully created.
+ *
  * @component
- * @returns {JSX.Element} Component for creating a new employee.
+ * @returns {JSX.Element} The component for creating a new employee.
  */
 const CreateEmployee = () => {
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   // Use a console.log to display the global state
   const employees = useSelector(state => state.employeeReduc.employees);
@@ -75,6 +91,7 @@ const CreateEmployee = () => {
     console.log('Updated state:', newEmployee);
 
     dispatch(addEmployee(newEmployee));
+    openModal();
   };
 
   // Event handler functions to update local states
@@ -101,7 +118,7 @@ const CreateEmployee = () => {
   const handleZipCodeChange = (event) => {
     setZipCode(event.target.value);
   };
-  
+
   const handleDepartmentChange = (selectedOption) => {
     setSelectedDepartment(selectedOption);
   };
@@ -215,7 +232,10 @@ const CreateEmployee = () => {
           />
         </form>
         <button onClick={handleSave}>Save</button>
-
+        <Modal isOpen={isModalOpen} onClose={closeModal}>
+          <h2>Employee Created!</h2>
+          <button onClick={closeModal}>Close Modal</button>
+        </Modal>
       </div>
     </>
   );
