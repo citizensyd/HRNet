@@ -3883,10 +3883,10 @@ data-urls@^2.0.0:
     whatwg-mimetype "^2.3.0"
     whatwg-url "^8.0.0"
 
-datipi-react@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/datipi-react/-/datipi-react-0.2.1.tgz#e497aa97f20f215b5e32e02dce34b96d7b95fa5e"
-  integrity sha512-IfUCHVBGCkWx1kbAokI37t1k0DQU/bfPipMVTUYFT2tbblB2p3MJgDL6jc1g3dZWfDGAoSJ4WyD1HGAUToLwWA==
+datipi-react@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/datipi-react/-/datipi-react-0.2.2.tgz#0de43dbb9d3500db2e11a554f0dd9694a25a9bc2"
+  integrity sha512-HQKkMuGjPemfq2rXkhmVHX3IeY0/Rc1nnMConJ3K/WI5y8M7zkYvzD8lwxiFCwEAGwzlDlxasUsb8EjdlTHOcw==
   dependencies:
     jquery "^3.7.1"
     jquery-mousewheel "^3.1.13"
