@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Select from 'react-select';
 import { useDispatch } from 'react-redux';
 import { addEmployee } from '../../slices/employeeSlice';
 import * as datipiReact from 'datipi-react';
-import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { states } from '../../data/states';
 
 /**
@@ -14,7 +14,11 @@ import { states } from '../../data/states';
  */
 const CreateEmployee = () => {
 
-  // Utilise useState pour gérer les valeurs des champs de saisie
+  // Use a console.log to display the global state
+  const employees = useSelector(state => state.employeeReduc.employees);
+  console.log('Employee state in CreateEmployee:', employees);
+
+  // Use useState to manage the values of input fields
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [dateOfBirth, setDateOfBirth] = useState('');
@@ -24,6 +28,7 @@ const CreateEmployee = () => {
   const [selectedState, setSelectedState] = useState(null);
   const [zipCode, setZipCode] = useState('');
   const [selectedDepartment, setSelectedDepartment] = useState(null);
+
   /**
    * A hook that initializes DateTimePickers when the component mounts
    * and destroys them when the component unmounts.
@@ -49,7 +54,6 @@ const CreateEmployee = () => {
     };
   }, []);
 
-
   /**
    * Handles the save action for creating a new employee.
    * @param {Event} event - The click event.
@@ -68,13 +72,12 @@ const CreateEmployee = () => {
       zipCode,
       department: selectedDepartment ? selectedDepartment.value : null,
     };
-    console.log('État mis à jour :', newEmployee);
+    console.log('Updated state:', newEmployee);
 
     dispatch(addEmployee(newEmployee));
   };
 
-
-  // Fonctions de gestionnaires d'événements pour mettre à jour les états locaux
+  // Event handler functions to update local states
   const handleFirstNameChange = (event) => {
     setFirstName(event.target.value);
   };
@@ -98,6 +101,7 @@ const CreateEmployee = () => {
   const handleZipCodeChange = (event) => {
     setZipCode(event.target.value);
   };
+  
   const handleDepartmentChange = (selectedOption) => {
     setSelectedDepartment(selectedOption);
   };
@@ -112,9 +116,9 @@ const CreateEmployee = () => {
   }));
 
   /**
- * Options for the Department dropdown.
- * @type {Array.<{value: string, label: string}>}
- */
+   * Options for the Department dropdown.
+   * @type {Array.<{value: string, label: string}>}
+   */
   const departmentOptions = [
     { value: 'Sales', label: 'Sales' },
     { value: 'Marketing', label: 'Marketing' },
