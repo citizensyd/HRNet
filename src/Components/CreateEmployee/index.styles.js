@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+/* import styled from 'styled-components';
 
 export const ModalStyles = {
   Open: styled.div`
@@ -7,4 +7,4 @@ export const ModalStyles = {
   Close: styled.div`
     display: none;
   `
-};
+}; */

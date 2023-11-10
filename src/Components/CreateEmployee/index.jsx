@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Select from 'react-select';
 import { useDispatch } from 'react-redux';
 import { addEmployee } from '../../slices/employeeSlice';
-import * as datipiReact from 'datipi-react';
 import { useSelector } from 'react-redux';
 import { states } from '../../data/states';
-import Modal from '../Modal';
+import { Modal } from 'test-modal-for-me'
 
 /**
  * Component representing the Create Employee page.
@@ -44,31 +43,6 @@ const CreateEmployee = () => {
   const [selectedState, setSelectedState] = useState(null);
   const [zipCode, setZipCode] = useState('');
   const [selectedDepartment, setSelectedDepartment] = useState(null);
-
-  /**
-   * A hook that initializes DateTimePickers when the component mounts
-   * and destroys them when the component unmounts.
-   */
-  useEffect(() => {
-    datipiReact.initDateTimePicker(
-      '#date-of-birth',
-      {
-        format: 'Y-m-d'
-      },
-      setDateOfBirth);
-
-    datipiReact.initDateTimePicker(
-      '#start-date',
-      {
-        format: 'Y-m-d'
-      },
-      setStartDate);
-
-    return () => {
-      datipiReact.destroyDateTimePicker('#date-of-birth');
-      datipiReact.destroyDateTimePicker('#start-date');
-    };
-  }, []);
 
   /**
    * Handles the save action for creating a new employee.
@@ -232,7 +206,7 @@ const CreateEmployee = () => {
           />
         </form>
         <button onClick={handleSave}>Save</button>
-        <Modal isOpen={isModalOpen} onClose={closeModal}>
+        <Modal isModalOpen={isModalOpen} onClose={closeModal}>
           <h2>Employee Created!</h2>
           <button onClick={closeModal}>Close Modal</button>
         </Modal>
