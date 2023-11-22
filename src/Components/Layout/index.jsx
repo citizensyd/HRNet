@@ -1,3 +1,4 @@
+import React from "react";
 import { Outlet } from "react-router-dom/dist";
 import { LayoutStyles } from "./index.styles";
 /**

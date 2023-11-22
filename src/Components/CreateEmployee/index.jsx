@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import Select from 'react-select';
 import { useDispatch } from 'react-redux';
 import { addEmployee } from '../../slices/employeeSlice';
 import { useSelector } from 'react-redux';
 import { states } from '../../data/states';
+import 'react-calendar/dist/Calendar.css';
+import { Button, TextField, FormControl, FormLabel, Select, InputLabel, MenuItem } from '@mui/material';
 import { Modal } from 'test-modal-for-me'
+import { ContainerStyles, FormStyles, CalendarContainer, StyledModal } from './index.styles';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns/AdapterDateFns.js';
+import { LocalizationProvider } from '@mui/x-date-pickers';
 
 /**
  * Component representing the Create Employee page.
@@ -20,6 +25,12 @@ import { Modal } from 'test-modal-for-me'
 const CreateEmployee = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Function to update the date of birth when a date is selected in the calendar
+  const handleDateChange = (date, setDate) => {
+    setDate(date);
+  };
+
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -36,13 +47,13 @@ const CreateEmployee = () => {
   // Use useState to manage the values of input fields
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [dateOfBirth, setDateOfBirth] = useState('');
-  const [startDate, setStartDate] = useState('');
+  const [dateOfBirth, setDateOfBirth] = useState(null);
+  const [startDate, setStartDate] = useState(null);
   const [street, setStreet] = useState('');
   const [city, setCity] = useState('');
-  const [selectedState, setSelectedState] = useState(null);
+  const [selectedState, setSelectedState] = useState('');
   const [zipCode, setZipCode] = useState('');
-  const [selectedDepartment, setSelectedDepartment] = useState(null);
+  const [selectedDepartment, setSelectedDepartment] = useState('');
 
   /**
    * Handles the save action for creating a new employee.
@@ -54,13 +65,13 @@ const CreateEmployee = () => {
     const newEmployee = {
       firstName,
       lastName,
-      dateOfBirth,
-      startDate,
+      dateOfBirth: dateOfBirth ? dateOfBirth.toISOString() : "",
+      startDate: startDate ? startDate.toISOString() : "",
       street,
       city,
-      state: selectedState ? selectedState.value : null,
+      state: selectedState,
       zipCode,
-      department: selectedDepartment ? selectedDepartment.value : null,
+      department: selectedDepartment,
     };
     console.log('Updated state:', newEmployee);
 
@@ -85,16 +96,16 @@ const CreateEmployee = () => {
     setCity(event.target.value);
   };
 
-  const handleStateChange = (selectedOption) => {
-    setSelectedState(selectedOption);
+  const handleStateChange = (event) => {
+    setSelectedState(event.target.value);
   };
 
   const handleZipCodeChange = (event) => {
     setZipCode(event.target.value);
   };
 
-  const handleDepartmentChange = (selectedOption) => {
-    setSelectedDepartment(selectedOption);
+  const handleDepartmentChange = (event) => {
+    setSelectedDepartment(event.target.value);
   };
 
   /**
@@ -123,94 +134,110 @@ const CreateEmployee = () => {
       <div>
         <h1>HRnet</h1>
       </div>
-      <div className="container">
-        <Link to="/list">View Current Employees</Link>
+      <ContainerStyles className="container">
+        <Button component={Link} to="/list" variant="contained" color="primary">
+          View Current Employees
+        </Button>
         <h2>Create Employee</h2>
-        <form action="#" id="create-employee">
-          <label htmlFor="first-name">First Name</label>
-          <input
+        <FormStyles action="#" id="create-employee">
+          <TextField
+            label="First Name"
             type="text"
             id="first-name"
             value={firstName}
             onChange={handleFirstNameChange}
           />
-
-          <label htmlFor="last-name">Last Name</label>
-          <input
+          <TextField
+            label="Last Name"
             type="text"
             id="last-name"
             value={lastName}
             onChange={handleLastNameChange}
           />
 
-          <label htmlFor="date-of-birth">Date of Birth</label>
-          <input
-            id="date-of-birth"
-            type="text"
-            value={dateOfBirth}
-            onChange={(e) => setDateOfBirth(e.target.value)}
-          />
-
-          <label htmlFor="start-date">Start Date</label>
-          <input
-            id="start-date"
-            type="text"
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
-          />
-
-          <fieldset className="address">
-            <legend>Address</legend>
-
-            <label htmlFor="street">Street</label>
-            <input
+          <CalendarContainer>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DatePicker
+                label="Date of Birth"
+                value={dateOfBirth}
+                onChange={(date) => handleDateChange(date, setDateOfBirth)}
+              />
+            </LocalizationProvider>
+          </CalendarContainer>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DatePicker
+              label="Start Date"
+              value={startDate}
+              onChange={(date) => handleDateChange(date, setStartDate)}
+            />
+          </LocalizationProvider>
+          <FormControl className="address">
+            <FormLabel component="legend">Adresse</FormLabel>
+            <TextField
+              label="Street"
               id="street"
               type="text"
               value={street}
               onChange={handleStreetChange}
             />
-
-            <label htmlFor="city">City</label>
-            <input
+            <TextField
+              label="City"
               id="city"
               type="text"
               value={city}
               onChange={handleCityChange}
             />
-
-            <label htmlFor="state">State</label>
-            <Select
-              name="state"
-              id="state"
-              options={options}
-              value={selectedState}
-              onChange={handleStateChange}
-            />
-
-            <label htmlFor="zip-code">Zip Code</label>
-            <input
+            <FormControl>
+              <InputLabel id="state-label">State</InputLabel>
+              <Select
+                label="State"
+                labelId="state-label"
+                id="state"
+                value={selectedState}
+                onChange={handleStateChange}
+              >
+                {options.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <TextField
+              label="Zip code"
               id="zip-code"
               type="number"
               value={zipCode}
               onChange={handleZipCodeChange}
             />
-          </fieldset>
-
-          <label htmlFor="department">Department</label>
-          <Select
-            name="department"
-            id="department"
-            options={departmentOptions}
-            value={selectedDepartment}
-            onChange={handleDepartmentChange}
-          />
-        </form>
-        <button onClick={handleSave}>Save</button>
-        <Modal isModalOpen={isModalOpen} onClose={closeModal}>
-          <h2>Employee Created!</h2>
-          <button onClick={closeModal}>Close Modal</button>
-        </Modal>
-      </div>
+          </FormControl>
+          <FormControl fullWidth >
+            <InputLabel id="departement-label">Departement</InputLabel>
+            <Select
+              label="Departement"
+              labelId="departement-label"
+              id="department"
+              value={selectedDepartment}
+              onChange={handleDepartmentChange}
+            >
+              {departmentOptions.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </FormStyles>
+        <Button variant="contained" color="primary" onClick={handleSave}>
+          Save
+        </Button>
+        <StyledModal isModalOpen={isModalOpen}>
+          <Modal isModalOpen={isModalOpen} onClose={closeModal}>
+            <h2>Employee Created!</h2>
+            <button onClick={closeModal}>Close Modal</button>
+          </Modal>
+        </StyledModal>
+      </ContainerStyles>
     </>
   );
 };

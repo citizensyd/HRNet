@@ -1,4 +1,7 @@
-import { Link } from "react-router-dom/dist";
+import React from "react";
+import { Link } from "react-router-dom"; // Import Link
+import Button from "@mui/material/Button";
+
 /**
  * Component representing the home page.
  * @component
@@ -7,12 +10,14 @@ import { Link } from "react-router-dom/dist";
 const Home = () => {
     return (
         <>
-            <Link to="/create">Create a new employee</Link>
-            <Link to="/list">List of employees</Link>
+            <Button component={Link} to="/create" variant="contained" color="primary">
+                Create a new employee
+            </Button>
+            <Button component={Link} to="/list" variant="contained" color="primary">
+                List of employees
+            </Button>
         </>
     );
 };
 
 export default Home;
-
-
