@@ -83,9 +83,24 @@ const CreateEmployee = () => {
     console.log('Updated state:', newEmployee);
 
     const usersRef = ref(db, 'users');
-    push(usersRef, newEmployee).catch(error => console.error('Error writing to Firebase:', error));
+    push(usersRef, newEmployee)
+      .then(() => {
+        // Reset state values to initial state after successful save
+        setFirstName('');
+        setLastName('');
+        setDateOfBirth(null);
+        setStartDate(null);
+        setStreet('');
+        setCity('');
+        setSelectedState('');
+        setZipCode('');
+        setSelectedDepartment('');
 
-  /*   dispatch(addEmployee(newEmployee)); */
+        // Open modal or perform other actions on success
+        openModal();
+      })
+      .catch(error => console.error('Error writing to Firebase:', error));
+    /*   dispatch(addEmployee(newEmployee)); */
     openModal();
   };
 
