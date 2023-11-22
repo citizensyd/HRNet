@@ -11,6 +11,7 @@ import { ContainerStyles, FormStyles, CalendarContainer, StyledModal } from './i
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns/AdapterDateFns.js';
 import { LocalizationProvider } from '@mui/x-date-pickers';
+import { StyleSheetManager } from 'styled-components';
 
 /**
  * Component representing the Create Employee page.
@@ -28,7 +29,8 @@ const CreateEmployee = () => {
 
   // Function to update the date of birth when a date is selected in the calendar
   const handleDateChange = (date, setDate) => {
-    setDate(date);
+    const dateAsJavaScriptDate = new Date(date);
+    setDate(dateAsJavaScriptDate);
   };
 
 
@@ -130,115 +132,110 @@ const CreateEmployee = () => {
   ];
 
   return (
-    <>
-      <div>
-        <h1>HRnet</h1>
-      </div>
-      <ContainerStyles className="container">
-        <Button component={Link} to="/list" variant="contained" color="primary">
-          View Current Employees
-        </Button>
-        <h2>Create Employee</h2>
-        <FormStyles action="#" id="create-employee">
+    <ContainerStyles className="container">
+      <h1>HRnet</h1>
+      <Button component={Link} to="/list" variant="contained" color="primary">
+        View Current Employees
+      </Button>
+      <h2>Create Employee</h2>
+      <FormStyles action="#" id="create-employee">
+        <TextField
+          label="First Name"
+          type="text"
+          id="first-name"
+          value={firstName}
+          onChange={handleFirstNameChange}
+        />
+        <TextField
+          label="Last Name"
+          type="text"
+          id="last-name"
+          value={lastName}
+          onChange={handleLastNameChange}
+        />
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <DatePicker
+            label="Date of Birth"
+            value={dateOfBirth}
+            onChange={(date) => handleDateChange(date, setDateOfBirth)}
+          />
+        </LocalizationProvider>
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <DatePicker
+            label="Start Date"
+            value={startDate}
+            onChange={(date) => handleDateChange(date, setStartDate)}
+          />
+        </LocalizationProvider>
+        <FormControl className="address">
+          <FormLabel component="legend">Adresse</FormLabel>
           <TextField
-            label="First Name"
+            label="Street"
+            id="street"
             type="text"
-            id="first-name"
-            value={firstName}
-            onChange={handleFirstNameChange}
+            value={street}
+            onChange={handleStreetChange}
           />
           <TextField
-            label="Last Name"
+            label="City"
+            id="city"
             type="text"
-            id="last-name"
-            value={lastName}
-            onChange={handleLastNameChange}
+            value={city}
+            onChange={handleCityChange}
           />
-
-          <CalendarContainer>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DatePicker
-                label="Date of Birth"
-                value={dateOfBirth}
-                onChange={(date) => handleDateChange(date, setDateOfBirth)}
-              />
-            </LocalizationProvider>
-          </CalendarContainer>
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <DatePicker
-              label="Start Date"
-              value={startDate}
-              onChange={(date) => handleDateChange(date, setStartDate)}
-            />
-          </LocalizationProvider>
-          <FormControl className="address">
-            <FormLabel component="legend">Adresse</FormLabel>
-            <TextField
-              label="Street"
-              id="street"
-              type="text"
-              value={street}
-              onChange={handleStreetChange}
-            />
-            <TextField
-              label="City"
-              id="city"
-              type="text"
-              value={city}
-              onChange={handleCityChange}
-            />
-            <FormControl>
-              <InputLabel id="state-label">State</InputLabel>
-              <Select
-                label="State"
-                labelId="state-label"
-                id="state"
-                value={selectedState}
-                onChange={handleStateChange}
-              >
-                {options.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            <TextField
-              label="Zip code"
-              id="zip-code"
-              type="number"
-              value={zipCode}
-              onChange={handleZipCodeChange}
-            />
-          </FormControl>
-          <FormControl fullWidth >
-            <InputLabel id="departement-label">Departement</InputLabel>
+          <FormControl>
+            <InputLabel id="state-label">State</InputLabel>
             <Select
-              label="Departement"
-              labelId="departement-label"
-              id="department"
-              value={selectedDepartment}
-              onChange={handleDepartmentChange}
+              label="State"
+              labelId="state-label"
+              id="state"
+              value={selectedState}
+              onChange={handleStateChange}
             >
-              {departmentOptions.map((option) => (
+              {options.map((option) => (
                 <MenuItem key={option.value} value={option.value}>
                   {option.label}
                 </MenuItem>
               ))}
             </Select>
           </FormControl>
-        </FormStyles>
-        <Button variant="contained" color="primary" onClick={handleSave}>
-          Save
-        </Button>
+          <TextField
+            label="Zip code"
+            id="zip-code"
+            type="number"
+            value={zipCode}
+            onChange={handleZipCodeChange}
+          />
+        </FormControl>
+        <FormControl>
+          <InputLabel id="departement-label">Departement</InputLabel>
+          <Select
+            label="Departement"
+            labelId="departement-label"
+            id="department"
+            value={selectedDepartment}
+            onChange={handleDepartmentChange}
+          >
+            {departmentOptions.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </FormStyles>
+      <Button variant="contained" color="primary" onClick={handleSave}>
+        Save
+      </Button>
+      <StyleSheetManager shouldForwardProp={(prop) => !['isModalOpen'].includes(prop)}>
         <StyledModal isModalOpen={isModalOpen}>
           <Modal isModalOpen={isModalOpen} onClose={closeModal}>
             <h2>Employee Created!</h2>
             <button onClick={closeModal}>Close Modal</button>
           </Modal>
         </StyledModal>
-      </ContainerStyles>
-    </>
+      </StyleSheetManager>
+    </ContainerStyles>
   );
 };
 

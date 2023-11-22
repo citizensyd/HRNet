@@ -1,16 +1,29 @@
 import styled from 'styled-components';
 
 export const ContainerStyles =  styled.section `
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+  background-color: white;
+  align-items: center;
+  justify-content: space-around;
+  border-radius: 10px;
+  padding: 20px;
 `;
 
 export const FormStyles =  styled.form `
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 40px;
+  justify-content: space-between;
+  width: 500px;
+  height: 350px;
+  padding: 20px;
   `;
 
-
 export const CalendarContainer = styled.div `
-  position: relative;
+
 `;
 
 export const StyledModal = styled.div`
@@ -28,12 +41,11 @@ export const StyledModal = styled.div`
   border-radius: 10px;
 
   h2 {
-    // Styles pour le titre h2
-    font-size: 50px;
+
   }
 
   button {
-    // Styles pour le bouton
+
   }
 `;
 
