@@ -1,50 +1,73 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useTable, useSortBy, useFilters, usePagination } from 'react-table';
 import { parseISO, format } from 'date-fns';
-import { useSelector } from 'react-redux';
 import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Select, MenuItem } from '@mui/material';
 import { ListContainer } from './index.styles';
+import { getDatabase, ref, onValue } from "firebase/database";
+import { app } from '../../firebaseConfig';
 
 /**
- * Component representing the list of employees.
- * @component
- * @returns {JSX.Element} Component for displaying a list of employees with sorting and filtering.
+ * A React component for displaying a list of employees with features like sorting, filtering, and pagination.
+ * Utilizes Firebase for data fetching and `react-table` for handling table display and interactions.
+ *
+ * @returns {JSX.Element} A component that renders a table of employees.
  */
 const EmployeeList = () => {
+  // State to store the fetched data from Firebase
+  const [dataFirebase, setData] = useState([]);
 
-  // Use a console.log to display the global state
-  const employees = useSelector(state => state.employeeReduc.employees);
-  console.log('Employee state in CreateEmployee:', employees);
+  // Establishing a connection to the Firebase database
+  const db = getDatabase(app);
 
+  // Effect to fetch data from Firebase and listen for changes
+  useEffect(() => {
+    const usersRef = ref(db, 'users');
+    onValue(usersRef, (snapshot) => {
+      const val = snapshot.val();
+      if (val) {
+        const transformedData = Object.keys(val).map(key => ({
+          id: key,
+          ...val[key],
+        }));
+        setData(transformedData);
+      }
+    });
+
+    return () => onValue(usersRef, () => { });
+  }, []);
+
+  // Columns configuration for `react-table`
   const columns = useMemo(() => [
     { Header: 'First Name', accessor: 'firstName' },
     { Header: 'Last Name', accessor: 'lastName' },
-    { Header: 'Start Date', accessor: 'startDate',
-      Cell: ({ value }) => format(parseISO(value), 'yyyy-MM-dd')},
+    {
+      Header: 'Start Date', accessor: 'startDate',
+      Cell: ({ value }) => format(parseISO(value), 'yyyy-MM-dd')
+    },
     { Header: 'Department', accessor: 'department' },
-    { Header: 'Date of Birth', accessor: 'dateOfBirth',
-      Cell: ({ value }) => format(parseISO(value), 'yyyy-MM-dd')},
+    {
+      Header: 'Date of Birth', accessor: 'dateOfBirth',
+      Cell: ({ value }) => format(parseISO(value), 'yyyy-MM-dd')
+    },
     { Header: 'Street', accessor: 'street' },
     { Header: 'City', accessor: 'city' },
     { Header: 'State', accessor: 'state' },
     { Header: 'Zip Code', accessor: 'zipCode' },
   ], []);
 
-  const data = useMemo(() => employees, [employees]);
+  // Preparing data for `react-table`
+  const data = useMemo(() => dataFirebase, [dataFirebase]);
 
+  // State and handler for filter input
   const [filterInput, setFilterInput] = useState("");
-
-  /**
-   * Handles the filter change for employee names.
-   * @param {Event} e - The change event.
-   */
   const handleFilterChange = e => {
     const value = e.target.value;
     setFilter("firstName", value);
     setFilterInput(value);
   };
 
+  // `react-table` hooks and functions
   const {
     getTableProps,
     getTableBodyProps,
@@ -64,7 +87,6 @@ const EmployeeList = () => {
     useSortBy,
     usePagination
   );
-
   return (
     <ListContainer>
       <h1>Current Employees</h1>

@@ -12,6 +12,9 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns/AdapterDateFns.js';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { StyleSheetManager } from 'styled-components';
+import { getDatabase, ref, set, push, onValue, get } from "firebase/database";
+import { app } from '../../firebaseConfig';
+
 
 /**
  * Component representing the Create Employee page.
@@ -24,6 +27,8 @@ import { StyleSheetManager } from 'styled-components';
  * @returns {JSX.Element} The component for creating a new employee.
  */
 const CreateEmployee = () => {
+
+  const db = getDatabase(app);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -77,7 +82,10 @@ const CreateEmployee = () => {
     };
     console.log('Updated state:', newEmployee);
 
-    dispatch(addEmployee(newEmployee));
+    const usersRef = ref(db, 'users');
+    push(usersRef, newEmployee).catch(error => console.error('Error writing to Firebase:', error));
+
+  /*   dispatch(addEmployee(newEmployee)); */
     openModal();
   };
 
