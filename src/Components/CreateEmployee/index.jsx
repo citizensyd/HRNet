@@ -27,19 +27,17 @@ const CreateEmployee = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Function to update the date of birth when a date is selected in the calendar
-  const handleDateChange = (date, setDate) => {
-    const dateAsJavaScriptDate = new Date(date);
-    setDate(dateAsJavaScriptDate);
-  };
-
-
   const openModal = () => {
     setIsModalOpen(true);
   };
-
+  
   const closeModal = () => {
     setIsModalOpen(false);
+  };  
+  
+  // Function to update the date of birth when a date is selected in the calendar
+  const handleDateChange = (date, setDate) => {
+    setDate(date);
   };
 
   // Use a console.log to display the global state
@@ -132,13 +130,13 @@ const CreateEmployee = () => {
   ];
 
   return (
-    <ContainerStyles className="container">
+    <ContainerStyles>
       <h1>HRnet</h1>
       <Button component={Link} to="/list" variant="contained" color="primary">
         View Current Employees
       </Button>
       <h2>Create Employee</h2>
-      <FormStyles action="#" id="create-employee">
+      <FormStyles>
         <TextField
           label="First Name"
           type="text"
@@ -227,14 +225,14 @@ const CreateEmployee = () => {
       <Button variant="contained" color="primary" onClick={handleSave}>
         Save
       </Button>
-      <StyleSheetManager shouldForwardProp={(prop) => !['isModalOpen'].includes(prop)}>
+      {/* <StyleSheetManager shouldForwardProp={(prop) => !['isModalOpen'].includes(prop)}> */}
         <StyledModal isModalOpen={isModalOpen}>
           <Modal isModalOpen={isModalOpen} onClose={closeModal}>
             <h2>Employee Created!</h2>
             <button onClick={closeModal}>Close Modal</button>
           </Modal>
         </StyledModal>
-      </StyleSheetManager>
+    {/*   </StyleSheetManager> */}
     </ContainerStyles>
   );
 };

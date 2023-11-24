@@ -19,7 +19,7 @@
     "redux": "^4.2.1",
     "redux-persist": "^6.0.0",
     "serve": "^14.2.1",
-    "test-modal-for-me": "^0.0.17"
+    "test-modal-for-me": "^0.0.18"
   },
   "scripts": {
     "start": "react-scripts start",

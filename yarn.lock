@@ -9666,10 +9666,10 @@ test-exclude@^6.0.0:
     glob "^7.1.4"
     minimatch "^3.0.4"
 
-test-modal-for-me@^0.0.17:
-  version "0.0.17"
-  resolved "https://registry.npmjs.org/test-modal-for-me/-/test-modal-for-me-0.0.17.tgz"
-  integrity sha512-Vu3kDD2zYa94piLGZnj/aw4FpUGOFuRLl/h0Z4V/KgaxvDCt5aCy6qO6SeGGDg0Tiy91R/arH6WqY6UPiXxj6A==
+test-modal-for-me@^0.0.18:
+  version "0.0.18"
+  resolved "https://registry.yarnpkg.com/test-modal-for-me/-/test-modal-for-me-0.0.18.tgz#9e039301d38b2498e8757373825024c16d857bcd"
+  integrity sha512-KbcpQMqokLFr3hyMU6EnlSvWAOcZ69Ko23CTXp64+MnqAjE48cfiRA5CRFwRiFmpZ8qRJ5rztEiGcZu97z+vFg==
 
 text-table@^0.2.0:
   version "0.2.0"
